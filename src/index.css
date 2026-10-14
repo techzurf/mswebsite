@@ -1,0 +1,472 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-primary: #1e3a8a; /* blue-900 */
+  --color-brand-secondary: #dc2626; /* red-600 */
+  --color-brand-accent: #3b82f6; /* blue-500 */
+  --color-haj-primary: #f59e0b; /* amber-500 */
+  --color-haj-secondary: #172554; /* blue-950 */
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  :root {
+    --background: #ffffff;
+    --foreground: #0f172a;
+    --card: #ffffff;
+    --card-foreground: #0f172a;
+    --border: #e2e8f0;
+  }
+  
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-[var(--background)] text-[var(--foreground)] font-sans antialiased;
+  }
+}
+
+/* Hide scrollbar for horizontal scrolling areas to feel more app-like */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@layer utilities {
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* ========================================================= */
+/* Uiverse.io btn-23 Animated Hover Marquee Effect          */
+/* Adapted cleanly for MS World Travels branding            */
+/* ========================================================= */
+
+.btn-23 {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-23:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.btn-23:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+.btn-23:active {
+  transform: scale(0.97);
+}
+
+/* Original in-flow button content (preserves size, padding, layout & icons) */
+.btn-23 .btn-text,
+.btn-23 .text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.2s ease;
+}
+
+/* Absolute marquee overlay */
+.btn-23 .btn-marquee-wrap {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  opacity: 0;
+  overflow: hidden;
+  transition: opacity 0.2s ease;
+}
+
+.btn-23 .marquee {
+  --spacing: 7em;
+  --start: 0em;
+  --end: var(--spacing);
+  display: inline-block;
+  white-space: nowrap;
+  letter-spacing: inherit;
+  font-weight: inherit;
+  font-size: inherit;
+  text-transform: inherit;
+  line-height: 1;
+  text-shadow: currentColor var(--spacing) 0,
+               currentColor calc(var(--spacing) * -1) 0,
+               currentColor calc(var(--spacing) * -2) 0,
+               currentColor calc(var(--spacing) * 2) 0;
+  -webkit-animation: marquee 1.2s linear infinite;
+  animation: marquee 1.2s linear infinite;
+  -webkit-animation-play-state: paused;
+  animation-play-state: paused;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* Desktop / Mouse hover state */
+@media (hover: hover) and (pointer: fine) {
+  .btn-23:hover .btn-text,
+  .btn-23:hover .text {
+    opacity: 0;
+  }
+
+  .btn-23:hover .btn-marquee-wrap,
+  .btn-23:hover > .marquee {
+    opacity: 1;
+  }
+
+  .btn-23:hover .marquee {
+    -webkit-animation-play-state: running;
+    animation-play-state: running;
+    opacity: 1;
+  }
+}
+
+/* Uiverse marquee keyframes */
+@-webkit-keyframes marquee {
+  0% {
+    transform: translateX(var(--start));
+  }
+  to {
+    transform: translateX(var(--end));
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(var(--start));
+  }
+  to {
+    transform: translateX(var(--end));
+  }
+}
+
+/* Accessibility: respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .btn-23 .marquee {
+    -webkit-animation: none !important;
+    animation: none !important;
+  }
+  .btn-23:hover .btn-text,
+  .btn-23:hover .text {
+    opacity: 1 !important;
+  }
+  .btn-23:hover .btn-marquee-wrap,
+  .btn-23:hover > .marquee {
+    display: none !important;
+  }
+}
+
+/* ========================================================= */
+/* Announcement Bar Seamless Continuous Ticker              */
+/* ========================================================= */
+
+@-webkit-keyframes announcement-ticker {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes announcement-ticker {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.announcement-ticker-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  -webkit-animation: announcement-ticker 25s linear infinite;
+  animation: announcement-ticker 25s linear infinite;
+}
+
+/* Pause ticker on hover and keyboard focus */
+.announcement-bar-container:hover .announcement-ticker-track,
+.announcement-bar-container:focus-within .announcement-ticker-track {
+  -webkit-animation-play-state: paused;
+  animation-play-state: paused;
+}
+
+/* Accessibility: respect prefers-reduced-motion with clean static display */
+@media (prefers-reduced-motion: reduce) {
+  .announcement-ticker-track {
+    -webkit-animation: none !important;
+    animation: none !important;
+    transform: none !important;
+    width: 100% !important;
+    justify-content: center !important;
+  }
+  .announcement-ticker-track > .ticker-duplicate {
+    display: none !important;
+  }
+}
+
+/* ========================================================= */
+/* MS World Travels - Interactive Navigation Tabs            */
+/* ========================================================= */
+
+.ms-nav-tabs {
+  --nav-blue: #24439a;
+  --nav-red: #e5232a;
+  --nav-text: #344054;
+  --nav-muted: #dce5f5;
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 5px;
+  border: 1px solid #e8edf5;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(36, 67, 154, 0.04);
+  isolation: isolate;
+}
+
+.ms-nav-tabs .ms-nav-link {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 15px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--nav-text);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    color 0.25s ease,
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+
+/* Hover state on inactive item: blue hover glow */
+.ms-nav-tabs .ms-nav-link:hover:not([aria-current="page"]):not(.active) {
+  color: var(--nav-blue);
+  background: #f0f4fd;
+  border-color: var(--nav-muted);
+  box-shadow: 0 2px 8px rgba(36, 67, 154, 0.12);
+  transform: translateY(-1px);
+}
+
+/* Active navigation item: subtle glossy active state */
+.ms-nav-tabs .ms-nav-link[aria-current="page"],
+.ms-nav-tabs .ms-nav-link.active {
+  color: #ffffff;
+  font-weight: 600;
+  background: linear-gradient(180deg, #2c4eb2 0%, var(--nav-blue) 65%, #1d377f 100%);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow:
+    0 4px 14px rgba(36, 67, 154, 0.32),
+    inset 0 1px 1px rgba(255, 255, 255, 0.35),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.12);
+  transform: translateY(-1px);
+}
+
+/* Small red brand accent for active item */
+.ms-nav-tabs .ms-nav-link[aria-current="page"]::after,
+.ms-nav-tabs .ms-nav-link.active::after {
+  content: "";
+  position: absolute;
+  bottom: 2.5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 2px;
+  border-radius: 9999px;
+  background: var(--nav-red);
+  box-shadow: 0 1px 3px rgba(229, 35, 42, 0.5);
+}
+
+/* Active navigation item hover */
+.ms-nav-tabs .ms-nav-link[aria-current="page"]:hover,
+.ms-nav-tabs .ms-nav-link.active:hover {
+  background: linear-gradient(180deg, #3256c3 0%, #24439a 65%, #193175 100%);
+  box-shadow:
+    0 6px 18px rgba(36, 67, 154, 0.38),
+    inset 0 1px 1px rgba(255, 255, 255, 0.4);
+}
+
+/* Focus visible state */
+.ms-nav-tabs .ms-nav-link:focus-visible {
+  outline: 2px solid var(--nav-blue);
+  outline-offset: 2px;
+}
+
+/* Active click/pressed state */
+.ms-nav-tabs .ms-nav-link:active {
+  transform: translateY(0);
+}
+
+/* ========================================================= */
+/* Visa Page Hero CTA Button                                 */
+/* ========================================================= */
+
+.visa-hero-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background-color: #e5232a;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  line-height: 1.4;
+  border: none;
+  border-radius: 12px;
+  padding: 16px 32px;
+  min-height: 52px;
+  width: auto;
+  max-width: 320px;
+  box-shadow: 0 6px 18px rgba(229, 35, 42, 0.22);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+  user-select: none;
+  outline: none;
+}
+
+/* Explicitly eliminate any unwanted pseudo-elements or protrusions */
+.visa-hero-cta::before,
+.visa-hero-cta::after {
+  content: none !important;
+  display: none !important;
+}
+
+.visa-hero-cta:hover {
+  background-color: #d01e24;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(229, 35, 42, 0.32);
+  color: #ffffff;
+}
+
+.visa-hero-cta:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(229, 35, 42, 0.2);
+}
+
+.visa-hero-cta:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .visa-hero-cta {
+    width: 100%;
+    max-width: 100%;
+    padding: 14px 24px;
+  }
+}
+
+/* ========================================================= */
+/* MS World Travels Airplane Cursor                          */
+/* ========================================================= */
+
+@media (hover: hover) and (pointer: fine) {
+  /* Normal page area: hide standard cursor to show custom airplane cursor */
+  body.airplane-cursor-enabled,
+  body.airplane-cursor-enabled * {
+    cursor: none;
+  }
+
+  /* 1. Buttons, links, clickable cards & WhatsApp: standard hand pointer */
+  body.airplane-cursor-enabled a,
+  body.airplane-cursor-enabled a *,
+  body.airplane-cursor-enabled button,
+  body.airplane-cursor-enabled button *,
+  body.airplane-cursor-enabled [role="button"],
+  body.airplane-cursor-enabled [role="button"] *,
+  body.airplane-cursor-enabled [role="link"],
+  body.airplane-cursor-enabled [role="link"] *,
+  body.airplane-cursor-enabled label,
+  body.airplane-cursor-enabled label *,
+  body.airplane-cursor-enabled summary,
+  body.airplane-cursor-enabled summary *,
+  body.airplane-cursor-enabled select,
+  body.airplane-cursor-enabled input[type="button"],
+  body.airplane-cursor-enabled input[type="submit"],
+  body.airplane-cursor-enabled input[type="reset"],
+  body.airplane-cursor-enabled input[type="checkbox"],
+  body.airplane-cursor-enabled input[type="radio"],
+  body.airplane-cursor-enabled input[type="range"],
+  body.airplane-cursor-enabled input[type="file"],
+  body.airplane-cursor-enabled .service-card,
+  body.airplane-cursor-enabled .service-card *,
+  body.airplane-cursor-enabled .ms-nav-link,
+  body.airplane-cursor-enabled .ms-nav-link *,
+  body.airplane-cursor-enabled .btn-23,
+  body.airplane-cursor-enabled .btn-23 *,
+  body.airplane-cursor-enabled .visa-hero-cta,
+  body.airplane-cursor-enabled .visa-hero-cta *,
+  body.airplane-cursor-enabled .cursor-pointer,
+  body.airplane-cursor-enabled .cursor-pointer *,
+  body.airplane-cursor-enabled [onclick],
+  body.airplane-cursor-enabled [onclick] *,
+  body.airplane-cursor-enabled [tabindex="0"],
+  body.airplane-cursor-enabled a[href*="whatsapp"],
+  body.airplane-cursor-enabled a[href*="wa.me"] {
+    cursor: pointer !important;
+  }
+
+  /* 2. Form text inputs & textareas: standard text cursor */
+  body.airplane-cursor-enabled input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+  body.airplane-cursor-enabled textarea,
+  body.airplane-cursor-enabled [contenteditable="true"],
+  body.airplane-cursor-enabled [contenteditable="true"] *,
+  body.airplane-cursor-enabled .cursor-text,
+  body.airplane-cursor-enabled .cursor-text * {
+    cursor: text !important;
+  }
+
+  /* 3. Disabled controls: standard not-allowed cursor */
+  body.airplane-cursor-enabled :disabled,
+  body.airplane-cursor-enabled :disabled *,
+  body.airplane-cursor-enabled [disabled],
+  body.airplane-cursor-enabled [disabled] *,
+  body.airplane-cursor-enabled [aria-disabled="true"],
+  body.airplane-cursor-enabled [aria-disabled="true"] *,
+  body.airplane-cursor-enabled .disabled,
+  body.airplane-cursor-enabled .disabled *,
+  body.airplane-cursor-enabled .cursor-not-allowed,
+  body.airplane-cursor-enabled .cursor-not-allowed * {
+    cursor: not-allowed !important;
+  }
+}
+

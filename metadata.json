@@ -1,0 +1,6 @@
+{
+  "name": "MS World Travels",
+  "description": "Premium mobile-first travel agency website offering flights, visas, tours, and dedicated Haj & Umrah services.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
